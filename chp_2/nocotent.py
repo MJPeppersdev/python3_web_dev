@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import cheerypy
+import cherrypy
 import os.path
 
 # get the path of this py file
@@ -12,6 +12,19 @@ class Root(object):
     """
     content = ""
     with open("content.txt", "rb") as f:
-        content = f.load()
+        content = f.read()
     
+    @cherrypy.expose
+    def index(self):
+        return Root.content
+  
+if __name__ == "__main__":
+    
+    root = Root()
+    
+    cherrypy.quickstart(root, config = {
+        '/static':
+		{ 'tools.staticdir.on':True,
+		  'tools.staticdir.dir':current_dir+"/static"
+		}})
 
